@@ -22,6 +22,7 @@
 						<th>Tanggal</th>
 						<th>Periode Ke</th>
 						<th>Jumlah</th>
+						<th>Bunga</th>
 						<th width="1%" class="text-center">Actions</th>
 					</tr>
 				</thead>
@@ -39,6 +40,7 @@
 						<td>{{ indonesian_date($angsur->tanggal, 'd-m-Y') }}</td>
 						<td>{{ $angsur->periode_ke }}</td>
 						<td>{{ rupiah($angsur->jumlah) }}</td>
+						<td>{{ rupiah($angsur->bunga) }}</td>
 						<td style="white-space: nowrap; width: 1%;">
 							<a target="_blank" href="{{ route('angsuran.cetak', $angsur->id) }}" class="btn btn-xs btn-info">Cetak</a>
 

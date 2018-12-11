@@ -8,7 +8,7 @@ class Angsuran extends Model
 {
 
 	protected $table = 'angsuran';
-	protected $fillable = ['jumlah', 'tanggal', 'periode_ke', 'peminjaman_id'];
+	protected $fillable = ['jumlah', 'tanggal', 'periode_ke', 'peminjaman_id', 'bunga'];
 
 
 

@@ -123,7 +123,6 @@ class PeminjamanController extends Controller
             'tanggal' => 'required',
             'jumlah' => 'required',
             'periode' => 'required',
-            'status' => 'required',
         ]);
 
         $simpanan = Peminjaman::findOrFail($id);
@@ -131,7 +130,6 @@ class PeminjamanController extends Controller
             'tanggal' => $request->get('tanggal'),
             'jumlah' => $request->get('jumlah'),
             'periode' => $request->get('periode'),
-            'status' => $request->get('status'),
         ]);
 
         return redirect(route('peminjaman.index'));

@@ -75,12 +75,7 @@
   </div>
 
 
-  <div class="form-group">
-    <label class="control-label col-lg-2">Status</label>
-    <div class="col-lg-10">
-      {{ Form::select('status', Config::get('enums.status_bayar'), $ambil->status , ['class' => 'form-control']) }}
-    </div>
-  </div>
+  
   <div class="text-right">
     <button type="submit" class="btn btn-primary">Submit <i class="icon-arrow-right14 position-right"></i></button>
   </div>

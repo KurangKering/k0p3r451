@@ -17,6 +17,7 @@ class CreateAngsuranTable extends Migration
             $table->increments('id');
             $table->char('periode_ke');
             $table->date('tanggal');
+            $table->decimal('bunga', '12','0');
             $table->decimal('jumlah', '12','0');
             $table->unsignedInteger('peminjaman_id');
             $table->timestamps();

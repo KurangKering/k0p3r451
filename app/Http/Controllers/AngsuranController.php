@@ -17,6 +17,26 @@ class AngsuranController extends Controller
       public function index()
       {
         $angsuran = Angsuran::latest()->get();
+        $groupedArr = $angsuran->groupBy('peminjaman_id');
+        
+        $groupedArr->each(function($i) {
+            $i = $i->sortBy('id');
+            $periode = 1;
+            $i->each( function($ii) use(&$periode){
+                $ii->periode_ke = $periode++;
+            });
+        });
+
+        $newArr = collect();
+        foreach ($groupedArr as $key => $value) {
+
+            foreach ($value as $keyy => $valuee) {
+                $newArr->push($valuee);
+            }
+        }
+
+        $newArr = $newArr->sortByDesc('id');
+        $angsuran = $newArr;
         return view('angsuran.index', compact('angsuran'));
     }
 
@@ -54,18 +74,29 @@ class AngsuranController extends Controller
             'id' => 'required',
             'tanggal' => 'required',
             'jumlah' => 'required',
-            'status' => 'required',
         ]);
         
         $angsuran = Angsuran::create([
             'peminjaman_id' => $request->get('id'),
             'tanggal' => $request->get('tanggal'),
             'jumlah' => $request->get('jumlah'),
-            'periode_ke' => $request->get('periode_ke'),
+            'bunga' => $request->get('bunga'),
+            // 'periode_ke' => $request->get('periode_ke'),
         ]);
 
-        $angsuran->peminjaman->status = $request->get('status');
+        $peminjaman = $angsuran->peminjaman;
+        $jumlahAngsur = $peminjaman->angsuran->sum('jumlah');
+        
+        $isLunas = $jumlahAngsur == $angsuran->peminjaman->jumlah;
+
+        if ($isLunas) {
+            $angsuran->peminjaman->status = '2';
+        } else {
+            $angsuran->peminjaman->status = '1';
+        }
         $angsuran->peminjaman->save();
+
+
 
         return redirect(route('peminjaman.index'));
     }
@@ -90,6 +121,23 @@ class AngsuranController extends Controller
     public function edit($id)
     {
         $angsuran = Angsuran::findOrFail($id);
+        $peminjaman = $angsuran->peminjaman;
+
+        $periode = 1;
+        $angsurans = $peminjaman->angsuran->sortBy('id');
+        
+        $periode = 1;
+        $angsurans->each(function($i) use(&$periode, &$angsuran) {
+            if ($i->id == $angsuran->id) {
+                $angsuran->periode_ke = $periode;
+            }
+            $i->periode_ke = $periode++;
+
+        });
+
+
+
+
         $pinjam = $angsuran->peminjaman;
         $pinjam->sisa_angsuran = ($pinjam->jumlah - $pinjam->angsuran->sum('jumlah')) + $angsuran->jumlah;
 
@@ -107,21 +155,29 @@ class AngsuranController extends Controller
     {
       $this->validate($request, [
         'tanggal' => 'required',
-        'jumlah' => 'required',
-        'status' => 'required',
     ]);
 
       $angsuran = Angsuran::findOrFail($id);
       $angsuran->update([
         'tanggal' => $request->get('tanggal'),
-        'jumlah' => $request->get('jumlah'),
     ]);
 
-      $angsuran->peminjaman->status = $request->get('status');
-      $angsuran->peminjaman->save();
 
-      return redirect(route('angsuran.index'));
-  }
+      $peminjaman = $angsuran->peminjaman;
+      $jumlahAngsur = $peminjaman->angsuran->sum('jumlah');
+
+      $isLunas = $jumlahAngsur == $angsuran->peminjaman->jumlah;
+
+      if ($isLunas) {
+        $angsuran->peminjaman->status = '2';
+    } else {
+        $angsuran->peminjaman->status = '1';
+    }
+    $angsuran->peminjaman->save();
+
+
+    return redirect(route('angsuran.index'));
+}
 
     /**
      * Remove the specified resource from storage.
@@ -143,7 +199,20 @@ class AngsuranController extends Controller
     public function cetak($id) 
     {
         $angsuran = Angsuran::findOrFail($id);
+        $peminjaman = $angsuran->peminjaman;
 
+        $periode = 1;
+        $angsurans = $peminjaman->angsuran->sortBy('id');
+        
+        $periode = 1;
+        $angsurans->each(function($i) use(&$periode, &$angsuran) {
+            if ($i->id == $angsuran->id) {
+                $angsuran->periode_ke = $periode;
+            }
+            $i->periode_ke = $periode++;
+
+        });
+        // return view('angsuran.cetak', compact('angsuran'));
 
         $pdf = PDF::setPaper('A5','landscape')->loadView('angsuran.cetak', compact('angsuran'));
         return $pdf->stream();

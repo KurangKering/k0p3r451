@@ -62,9 +62,9 @@
     </div>
   </div>
   <div class="form-group">
-    <label class="control-label col-lg-2">Periode Ke</label>
+    <label class="control-label col-lg-2">Angsuran Ke</label>
     <div class="col-lg-10">
-      {{ Form::text('periode_ke', $angsuran->periode_ke, ['class' => 'form-control', 'readonly' => true]  ) }}
+      <p class="form-control-static">{{ (($angsuran->periode_ke)) . " dari " . $angsuran->peminjaman->periode }}</p>
 
     </div>
   </div>
@@ -75,17 +75,26 @@
     </div>
   </div>
   <div class="form-group">
-    <label class="control-label col-lg-2">Jumlah Angsuran</label>
+    <label class="control-label col-lg-2">Angsuran Per Bulan</label>
     <div class="col-lg-10">
-      {{ Form::number('jumlah', $angsuran->jumlah, ['class' => 'form-control']) }}
+      {{ Form::text('', rupiah($angsuran->jumlah), ['class' => 'form-control', 'readonly' => true]) }}
     </div>
   </div>
+
   <div class="form-group">
-    <label class="control-label col-lg-2">Status</label>
+    <label class="control-label col-lg-2">Bunga 10%</label>
     <div class="col-lg-10">
-      {{ Form::select('status', Config::get('enums.status_bayar'), $angsuran->peminjaman->status, ['class' => 'form-control']) }}
+      {{ Form::text('', rupiah($angsuran->bunga), ['class' => 'form-control', 'readonly' => true]) }}
     </div>
   </div>
+
+  <div class="form-group">
+        <label class="control-label col-lg-2">Jumlah Pembayaran</label>
+        <div class="col-lg-10">
+          {{ Form::text('', rupiah($angsuran->jumlah + $angsuran->bunga), ['class' => 'form-control', 'readonly' => true]) }}
+        </div>
+      </div>
+  
   <div class="text-right">
     <button type="submit" class="btn btn-primary">Submit <i class="icon-arrow-right14 position-right"></i></button>
   </div>

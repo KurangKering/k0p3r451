@@ -49,7 +49,7 @@
     $roles = '';
 
     if ((Auth::user())) {
-        $foto = Auth::user()->foto_small;
+        $foto = Auth::user()->foto;
         $nama = Auth::user()->name;
         $roles =  implode(',', Auth::user()->getRoleNames()->toArray()) ;
     }

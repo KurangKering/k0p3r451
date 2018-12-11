@@ -25,11 +25,19 @@
 						<th>Status</th>
 						<th>Jumlah</th>
 						<th>Sisa</th>
+						<th>Sisa</th>
 						<th width="1%" class="text-center">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
 					@foreach ($pinjaman as $pinjam)
+					@php 
+					$sisa_periode = $pinjam->periode - count($pinjam->angsuran);
+					$bunga = ($pinjam->jumlah * 0.1);
+					$jumlah = (($pinjam->jumlah + $bunga));
+					$sisa = (($bunga / $pinjam->periode) * $sisa_periode) + ($pinjam->jumlah - $pinjam->angsuran->sum('jumlah'));
+					@endphp
+
 					<tr>
 						<td>{{ $pinjam->anggota->user->nip }}</td>
 						<td>{{ $pinjam->anggota->user->name }}</td>
@@ -40,7 +48,7 @@
 							</a>
 						</td>
 						<td>{{ indonesian_date($pinjam->tanggal, 'd-m-Y') }}</td>
-						<td>{{ $pinjam->periode }}</td>
+						<td>{{ count($pinjam->angsuran) . '/'.$pinjam->periode }}</td>
 						<td>
 							@if ($pinjam->status == '1')
 							<label class="badge badge-info">angsur</label>
@@ -52,8 +60,8 @@
 							
 
 						</td>
-						<td>{{ rupiah($pinjam->jumlah) }}</td>
-						<td>{{ rupiah($pinjam->sisa_angsuran) }}</td>
+						<td>{{ rupiah($jumlah) }}</td>
+						<td>{{ rupiah($sisa) }}</td>
 						<td style="white-space: nowrap; width: 1%;">
 							<a href="{{ route('peminjaman.cetak', $pinjam->id) }}" target="_blank" class="btn btn-xs btn-info">Cetak</a>
 							@if ($pinjam->status == '1')
