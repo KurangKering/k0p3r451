@@ -11,9 +11,67 @@ use Hash;
 use Illuminate\Support\Facades\Storage;
 use Image;
 use File;
+use App\Angsuran;
+use App\Peminjaman;
 class AnggotaController extends Controller
 {
 
+
+     /**
+     * Daftar angsuran anggota
+     * route('anggota.angsuran')
+     * url('anggota/angsuran')
+     */
+     public function angsuran() 
+     {
+        $anggota = \Auth::user()->anggota;
+        $angsuran = Angsuran::whereIn('peminjaman_id', $anggota->peminjaman->pluck('id'))->latest()->get();
+        return view('anggota.daftar_angsuran', compact('angsuran'));
+    }
+
+
+     /**
+     * Daftar peminjaman anggota
+     * route('anggota.peminjaman')
+     * url('anggota/peminjaman')
+     */
+     public function peminjaman() 
+     {
+        $anggota = \Auth::user()->anggota;
+        $peminjaman = $anggota->peminjaman->sortByDesc('id');
+        $peminjaman->each(function($pinjam) {
+            $jumlah_angsuran = $pinjam->angsuran->sum('jumlah');
+
+            $pinjam->sisa_angsuran = $pinjam->jumlah - $jumlah_angsuran;
+
+        });
+        return view('anggota.daftar_peminjaman', compact('peminjaman'));
+    }
+
+
+      /**
+     * Daftar ambil simpanan anggota
+     * route('anggota.ambil_simpanan')
+     * url('anggota/ambil_simpanan')
+     */
+      public function ambil_simpanan() 
+      {
+        $anggota = \Auth::user()->anggota;
+        $ambil_simpanan = $anggota->ambil_simpanan->sortByDesc('id');
+        return view('anggota.daftar_ambil_simpanan', compact('ambil_simpanan'));
+    }
+
+    /**
+     * Daftar simpanan pokok anggota
+     * route('anggota.simpanan_pokok')
+     * url('anggota/simpanan_pokok')
+     */
+    public function simpanan_pokok() 
+    {
+        $anggota = \Auth::user()->anggota;
+        $simpanan_pokok = $anggota->simpanan_pokok->sortByDesc('id');
+        return view('anggota.daftar_simpanan_pokok', compact('simpanan_pokok'));
+    }
     public function daftar() {
         return view('register');
     }

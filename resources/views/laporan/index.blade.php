@@ -25,7 +25,7 @@
 			</div>
 			<div class="form-group">
 				<label for="" class="control-label">Tahun</label>
-				{{ Form::select('tahun', $tahun, null, ['class' => 'form-control'] ) }}
+				{{ Form::select('tahun', $tahun, date('Y'), ['class' => 'form-control'] ) }}
 				
 			</div>
 			<div class="text-right">

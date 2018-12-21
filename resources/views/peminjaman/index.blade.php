@@ -1,7 +1,11 @@
 @extends('layouts.template')
 @section('title', 'Daftar Peminjaman')
 @section('custom_css')
-
+<style>
+	th,td {
+		white-space: nowrap;
+	}
+</style>
 @endsection
 
 @section('header-title', 'Daftar Peminjaman')
@@ -17,6 +21,7 @@
 			<table class="table datatable-basic">
 				<thead>
 					<tr>
+						<th>ID</th>
 						<th>NIP</th>
 						<th>Nama</th>
 						<th>Foto</th>
@@ -24,7 +29,6 @@
 						<th>Periode</th>
 						<th>Status</th>
 						<th>Jumlah</th>
-						<th>Sisa</th>
 						<th>Sisa</th>
 						<th width="1%" class="text-center">Actions</th>
 					</tr>
@@ -39,10 +43,11 @@
 					@endphp
 
 					<tr>
+						<td>{{ $pinjam->id }}</td>
 						<td>{{ $pinjam->anggota->user->nip }}</td>
 						<td>{{ $pinjam->anggota->user->name }}</td>
 						<td>
-							<a href="{{ Storage::url($pinjam->anggota->user->foto) ?? '' }}">
+							<a href="{{ Storage::url($pinjam->anggota->user->foto) ?? '' }}" data-popup="lightbox">
 								<img src="{{ Storage::url($pinjam->anggota->user->foto_small) ?? '' }}" alt="">
 								
 							</a>
@@ -83,7 +88,9 @@
 
 @section('custom_js')
 <script>
-	$('table').DataTable();
+	$('table').DataTable({
+		order : [],
+	});
 
 
 	function deletePokok(id) {

@@ -45,7 +45,7 @@ class SimpananPokokController extends Controller
             'bulan' => 'required',
             'tahun' => 'required',
             'tanggal' => 'required',
-            'jumlah' => 'required',
+            'jumlah' => 'required|not_in:0',
         ]);
 
 
@@ -106,7 +106,7 @@ class SimpananPokokController extends Controller
           'bulan' => 'required',
           'tahun' => 'required',
           'tanggal' => 'required',
-          'jumlah' => 'required',
+          'jumlah' => 'required|not_in:0',
       ]);
 
        $simpanan = SimpananPokok::findOrFail($id);

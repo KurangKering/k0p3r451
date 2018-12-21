@@ -36,6 +36,11 @@
 			<td>{{ $simpanan->anggota->user->nip }}</td>
 		</tr>
 		<tr>
+			<th>PERIODE</th>
+			<td class=".tipis">:</td>
+			<td>{{ Config::get('enums.bulan')[$simpanan->bulan] . ' ' . $simpanan->tahun }}</td>
+		</tr>
+		<tr>
 			<th>JUMLAH SIMPANAN POKOK</th>
 			<td class=".tipis">:</td>
 			<td>{{ rupiah($simpanan->jumlah) }}</td>

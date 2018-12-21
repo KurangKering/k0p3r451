@@ -32,7 +32,7 @@
 						<td>{{ Config::get('enums.jenis_kelamin')[$anggota->user->jenis_kelamin] }}</td>
 						<td>{{ $anggota->user->no_telepon }}</td>
 						<td>
-							<a href="{{ Storage::url($anggota->user->foto) ?? '' }}">
+							<a href="{{ Storage::url($anggota->user->foto) ?? '' }}" data-popup="lightbox">
 								<img src="{{ Storage::url($anggota->user->foto_small) ?? '' }}" alt="">
 								
 							</a>

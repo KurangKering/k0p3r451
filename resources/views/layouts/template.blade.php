@@ -35,6 +35,8 @@
     <script type="text/javascript" src="{{ asset('templates/material/assets/js/plugins/ui/ripple.min.js') }}"></script>
     
     <!-- /theme JS files -->
+
+    <script type="text/javascript" src="{{ asset('templates/material/assets/js/plugins/media/fancybox.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('templates/material/assets/js/plugins/tables/datatables/datatables.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('plugins/sweetalert/dist/sweetalert.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('plugins/axios/dist/axios.min.js') }}"></script>
@@ -83,10 +85,10 @@
                     <div class="sidebar-user-material">
                         <div class="category-content">
                             <div class="sidebar-user-material-content">
-                                <a >
-                                    <img class="img-circle img-responsive" src="{{ Storage::url($foto) ?? '' }}" alt="">
-
-                                </a>
+                                <a href="{{ Storage::url($foto) ?? '' }}" data-popup="lightbox">
+                                <img  class="img-circle img-responsive" src="{{ Storage::url($foto) ?? '' }}" alt="">
+                                
+                            </a>
                                 
                                 <h6>{{ $nama }}</h6>
                                 <span class="text-size-small">{{ $roles }}</span>
@@ -152,6 +154,12 @@
 </div>
 <!-- /page container -->
 
+<script>
+      // Lightbox
+      $('[data-popup="lightbox"]').fancybox({
+        padding: 3
+    });
+</script>
 @yield('custom_js')
 
 </body>

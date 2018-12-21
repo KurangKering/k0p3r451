@@ -17,26 +17,26 @@ class AngsuranController extends Controller
       public function index()
       {
         $angsuran = Angsuran::latest()->get();
-        $groupedArr = $angsuran->groupBy('peminjaman_id');
+        // $groupedArr = $angsuran->groupBy('peminjaman_id');
         
-        $groupedArr->each(function($i) {
-            $i = $i->sortBy('id');
-            $periode = 1;
-            $i->each( function($ii) use(&$periode){
-                $ii->periode_ke = $periode++;
-            });
-        });
+        // $groupedArr->each(function($i) {
+        //     $i = $i->sortBy('id');
+        //     $periode = 1;
+        //     $i->each( function($ii) use(&$periode){
+        //         $ii->periode_ke = $periode++;
+        //     });
+        // });
 
-        $newArr = collect();
-        foreach ($groupedArr as $key => $value) {
+        // $newArr = collect();
+        // foreach ($groupedArr as $key => $value) {
 
-            foreach ($value as $keyy => $valuee) {
-                $newArr->push($valuee);
-            }
-        }
+        //     foreach ($value as $keyy => $valuee) {
+        //         $newArr->push($valuee);
+        //     }
+        // }
 
-        $newArr = $newArr->sortByDesc('id');
-        $angsuran = $newArr;
+        // $newArr = $newArr->sortByDesc('id');
+        // $angsuran = $newArr;
         return view('angsuran.index', compact('angsuran'));
     }
 
@@ -70,6 +70,8 @@ class AngsuranController extends Controller
      */
     public function store(Request $request)
     {
+
+
         $this->validate($request, [
             'id' => 'required',
             'tanggal' => 'required',
@@ -81,7 +83,7 @@ class AngsuranController extends Controller
             'tanggal' => $request->get('tanggal'),
             'jumlah' => $request->get('jumlah'),
             'bunga' => $request->get('bunga'),
-            // 'periode_ke' => $request->get('periode_ke'),
+            'periode_ke' => $request->get('periode_ke'),
         ]);
 
         $peminjaman = $angsuran->peminjaman;
@@ -98,7 +100,7 @@ class AngsuranController extends Controller
 
 
 
-        return redirect(route('peminjaman.index'));
+        return redirect(route('angsuran.index'));
     }
 
     /**
@@ -126,14 +128,14 @@ class AngsuranController extends Controller
         $periode = 1;
         $angsurans = $peminjaman->angsuran->sortBy('id');
         
-        $periode = 1;
-        $angsurans->each(function($i) use(&$periode, &$angsuran) {
-            if ($i->id == $angsuran->id) {
-                $angsuran->periode_ke = $periode;
-            }
-            $i->periode_ke = $periode++;
+        // $periode = 1;
+        // $angsurans->each(function($i) use(&$periode, &$angsuran) {
+        //     if ($i->id == $angsuran->id) {
+        //         $angsuran->periode_ke = $periode;
+        //     }
+        //     $i->periode_ke = $periode++;
 
-        });
+        // });
 
 
 
@@ -188,6 +190,12 @@ class AngsuranController extends Controller
     public function destroy($id)
     {
         $angsuran = Angsuran::findOrFail($id);
+        $peminjaman = $angsuran->peminjaman;
+        $periode = 1;
+        $peminjaman->angsuran->where('id', '!=', $angsuran->id)->sortBy('id')->each(function($i) use(&$periode) {
+            $i->periode_ke = $periode++;
+            $i->save(); 
+        });
         $angsuran->delete();
 
         $angsuran->peminjaman->status = '1';

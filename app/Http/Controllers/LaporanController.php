@@ -5,8 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use PDF;
 use App\Anggota;
+use App\SimpananPokok;
+use App\SimpananWajib;
 use App\AmbilSimpanan;
+use App\Peminjaman;
+use App\Angsuran;
 use Carbon\Carbon;
+use DB;
 class LaporanController extends Controller
 {
 
@@ -73,6 +78,16 @@ class LaporanController extends Controller
             return $pdf->stream();
             break;
 
+
+            case '3':
+            $angsurans = Angsuran::whereMonth('tanggal', '=', $input_date->month)
+            ->whereYear('tanggal', '=', $input_date->year)
+            ->latest()->get();
+            // return view('laporan.laporan_peminjaman_angsuran', compact('angsurans', 'input_date', 'bulan', 'tahun'));
+            $pdf = PDF::setPaper('A4','landscape')->loadView('laporan.laporan_peminjaman_angsuran', compact('angsurans', 'input_date', 'bulan', 'tahun'));
+            return $pdf->stream();
+            break;
+
             default:
         # code...
             break;
@@ -89,9 +104,16 @@ class LaporanController extends Controller
         $jenis_laporan = [
             '1' => 'Simpanan Pokok dan Wajib',
             '2' => 'Pengambilan Simpanan Pokok',
+            '3' => 'Peminjaman dan Angsuran',
         ];
-        $arrTahun = ['2018'];
-        $tahun = array_combine($arrTahun, $arrTahun);
+
+        $simpanan_pokok = SimpananPokok::select(DB::raw('YEAR(tanggal) as tanggal'));
+        $simpanan_wajib = SimpananWajib::select(DB::raw('YEAR(tanggal) as tanggal'));
+        $ambil_simpanan = AmbilSimpanan::select(DB::raw('YEAR(tanggal) as tanggal'));
+        $peminjaman = Peminjaman::select(DB::raw('YEAR(tanggal) as tanggal'));
+        $angsuran = Angsuran::select(DB::raw('YEAR(tanggal) as tanggal'))->union($simpanan_pokok)->union($simpanan_wajib)->union($ambil_simpanan)->union($peminjaman)->get();
+
+        $tahun = $angsuran->sort()->pluck('tanggal','tanggal');
         return view('laporan.index', compact('jenis_laporan', 'tahun'));
     }
 

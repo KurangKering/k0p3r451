@@ -52,7 +52,7 @@ class AmbilSimpananController extends Controller
         $this->validate($request, [
             'id' => 'required',
             'tanggal' => 'required',
-            'jumlah' => 'required',
+            'jumlah' => 'required|not_in:0',
         ]);
         
         $sisa = $request->get('val_sisa');
@@ -117,7 +117,7 @@ class AmbilSimpananController extends Controller
     {
         $this->validate($request, [
             'tanggal' => 'required',
-            'jumlah' => 'required',
+            'jumlah' => 'required|not_in:0',
         ]);
         
         $simpanan = AmbilSimpanan::findOrFail($id);

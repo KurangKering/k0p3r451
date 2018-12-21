@@ -10,7 +10,7 @@
 
 @section('header-title', 'Daftar Simpanan Pokok')
 @section('heading-elements')
-<button class="btn btn-xs btn-primary" onclick="location.href='{{ route('simpanan_pokok.create') }}'">Tambah</button>
+
 @endsection
 
 @section('content')
@@ -21,36 +21,19 @@
 			<table class="table datatable-basic">
 				<thead>
 					<tr>
-						<th>NIP</th>
-						<th>Nama</th>
-						<th>Foto</th>
 						<th>Tanggal Bayar</th>
 						<th>Bulan</th>
 						<th>Tahun</th>
 						<th>Jumlah</th>
-						<th width="1%" class="text-center">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
-					@foreach ($simpanan_pokok as $pokok)
+					@foreach ($simpanan_pokok as $simpanan)
 					<tr>
-						<td>{{ $pokok->anggota->user->nip }}</td>
-						<td>{{ $pokok->anggota->user->name }}</td>
-						<td>
-							<a href="{{ Storage::url($pokok->anggota->user->foto) ?? '' }}" data-popup="lightbox">
-								<img src="{{ Storage::url($pokok->anggota->user->foto_small) ?? '' }}" alt="">
-								
-							</a>
-						</td>
-						<td>{{ indonesian_date($pokok->tanggal, 'd-m-Y') }}</td>
-						<td>{{ Config::get('enums.bulan')[$pokok->bulan] }}</td>
-						<td>{{ ($pokok->tahun) }}</td>
-						<td>{{ rupiah($pokok->jumlah) }}</td>
-						<td style="white-space: nowrap; width: 1%;">
-							<a target="_blank" href="{{ route('simpanan_pokok.cetak', $pokok->id) }}" class="btn btn-xs btn-info">Cetak</a>
-							<a href="{{ route('simpanan_pokok.edit', $pokok->id) }}" class="btn btn-success btn-xs">Edit</a>
-							<a onclick="deletePokok({{ $pokok->id }})" class="btn btn-warning btn-xs">Delete</a>
-						</td>
+						<td>{{ indonesian_date($simpanan->tanggal, 'd-m-Y') }}</td>
+						<td>{{ Config::get('enums.bulan')[$simpanan->bulan] }}</td>
+						<td>{{ $simpanan->tahun }}</td>
+						<td>{{ rupiah($simpanan->jumlah) }}</td>
 					</tr>
 					@endforeach
 				</tbody>

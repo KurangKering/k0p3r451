@@ -39,8 +39,8 @@
             @endif
           </td>
           <td>
-            <a href="{{ Storage::url($user->foto) }}">
-              <img src="{{ Storage::url($user->foto_small) ?? '' }}" alt="">
+            <a href="{{ Storage::url($user->foto) }}" data-popup="lightbox">
+              <img src="{{ Storage::url($user->foto_small) ?? '' }}" alt="" class="">
             </a>
           </td>
           <td style="white-space: nowrap; width: 1%">
@@ -100,7 +100,7 @@
         })
         .catch(err => {
           if (err) {
-          location.href= "{{ request()->url() }}";
+            location.href= "{{ request()->url() }}";
             
           }
         })

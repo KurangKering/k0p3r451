@@ -2,9 +2,9 @@
 @section('title', 'Daftar Angsuran')
 @section('custom_css')
 <style>
-	th,td {
-		white-space: nowrap;
-	}
+th,td {
+	white-space: nowrap;
+}
 </style>
 @endsection
 
@@ -20,41 +20,26 @@
 			<table class="table datatable-basic " >
 				<thead>
 					<tr>
-						<th>NIP</th>
-						<th>Nama</th>
-						<th>Foto</th>
 						<th>Tanggal</th>
 						<th>Peminjaman ID</th>
 						<th>Periode Ke</th>
 						<th>Jumlah</th>
 						<th>Bunga</th>
-						<th width="1%" class="text-center">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
+					
 					@foreach ($angsuran as $angsur)
 					<tr>
-						<td>{{ $angsur->peminjaman->anggota->user->nip }}</td>
-						<td>{{ $angsur->peminjaman->anggota->user->name }}</td>
-						<td>
-							<a href="{{ Storage::url($angsur->peminjaman->anggota->user->foto) ?? '' }}" data-popup="lightbox">
-								<img src="{{ Storage::url($angsur->peminjaman->anggota->user->foto_small) ?? '' }}" alt="">
-								
-							</a>
-						</td>
 						<td>{{ indonesian_date($angsur->tanggal, 'd-m-Y') }}</td>
 						<td>{{ $angsur->peminjaman->id }}</td>
 						<td>{{ $angsur->periode_ke }}</td>
 						<td>{{ rupiah($angsur->jumlah) }}</td>
 						<td>{{ rupiah($angsur->bunga) }}</td>
-						<td style="white-space: nowrap; width: 1%;">
-							<a target="_blank" href="{{ route('angsuran.cetak', $angsur->id) }}" class="btn btn-xs btn-info">Cetak</a>
-
-							<a href="{{ route('angsuran.edit', $angsur->id) }}" class="btn btn-success btn-xs">Edit</a>
-							<a onclick="deleteAngsuran({{ $angsur->id }})" class="btn btn-warning btn-xs">Delete</a>
-						</td>
+						
 					</tr>
 					@endforeach
+					
 				</tbody>
 			</table>
 		</div>

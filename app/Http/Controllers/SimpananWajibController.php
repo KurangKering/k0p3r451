@@ -44,7 +44,7 @@ class SimpananWajibController extends Controller
         $this->validate($request, [
             'id' => 'required|unique:simpanan_wajib,anggota_id',
             'tanggal' => 'required',
-            'jumlah' => 'required',
+            'jumlah' => 'required|not_in:0',
         ]);
 
 
@@ -92,7 +92,7 @@ class SimpananWajibController extends Controller
         $this->validate($request, [
             'id' => 'required|unique:simpanan_wajib,anggota_id,'.$id,
             'tanggal' => 'required',
-            'jumlah' => 'required',
+            'jumlah' => 'required|not_in:0',
         ]);
 
 

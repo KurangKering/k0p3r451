@@ -24,7 +24,7 @@ class PeminjamanController extends Controller
      */
       public function index()
       {
-        $pinjaman = Peminjaman::get();
+        $pinjaman = Peminjaman::latest()->get();
         $pinjaman->each(function($pinjam) {
             $jumlah_angsuran = $pinjam->angsuran->sum('jumlah');
 
@@ -41,6 +41,7 @@ class PeminjamanController extends Controller
      */
     public function create()
     {
+
         $anggotas = Anggota::with('simpanan_pokok')
         ->where('status', '2')
         ->get();
@@ -63,10 +64,11 @@ class PeminjamanController extends Controller
      */
     public function store(Request $request)
     {
+
         $this->validate($request, [
             'id' => 'required',
             'tanggal' => 'required',
-            'jumlah' => 'required',
+            'jumlah' => 'required|not_in:0',
             'periode' => 'required',
         ]);
         
@@ -121,7 +123,7 @@ class PeminjamanController extends Controller
     {
         $this->validate($request, [
             'tanggal' => 'required',
-            'jumlah' => 'required',
+            'jumlah' => 'required|not_in:0',
             'periode' => 'required',
         ]);
 
@@ -144,6 +146,9 @@ class PeminjamanController extends Controller
     public function destroy($id)
     {
         $ambil = Peminjaman::findOrFail($id);
+        $ambil->angsuran->each(function($i) {
+            $i->delete();
+        } );
         $ambil->delete();
 
         return redirect(route('peminjaman.index'));

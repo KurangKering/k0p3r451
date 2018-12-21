@@ -67,6 +67,33 @@ Route::get('peminjaman/{id}/angsur',[
 ]);
 
 
+Route::get('anggota/simpanan_pokok',[
+	'as' => 'anggota.simpanan_pokok',
+	'uses' => 'AnggotaController@simpanan_pokok',
+
+]);
+
+
+Route::get('anggota/ambil_simpanan',[
+	'as' => 'anggota.ambil_simpanan',
+	'uses' => 'AnggotaController@ambil_simpanan',
+
+]);
+
+Route::get('anggota/peminjaman',[
+	'as' => 'anggota.peminjaman',
+	'uses' => 'AnggotaController@peminjaman',
+
+]);
+
+Route::get('anggota/angsuran',[
+	'as' => 'anggota.angsuran',
+	'uses' => 'AnggotaController@angsuran',
+
+]);
+
+
+
 Route::get('daftar',[
 	'as' => 'anggota.daftar',
 	'uses' => 'AnggotaController@daftar',

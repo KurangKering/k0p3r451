@@ -25,13 +25,17 @@
      <li><a href="{{ route('users.index') }}"><i class="icon-circle"></i> <span>Pengguna</span></a></li>
 
      @elserole('ketua')
-     <li><a href="{{ route('anggota.index') }}">Daftar Anggota</a></li>
+     <li><a href="{{ route('anggota.index') }}"><i class="icon-circle"></i> <span>Daftar Anggota</span></a></li>
+     
      <li><a href="{{ route('laporan.index') }}"><i class="icon-circle"></i> <span>Laporan</span></a></li>
 
      @elserole('anggota')
-
+     <li><a href="{{ route('anggota.simpanan_pokok') }}"><i class="icon-circle"></i> <span>Daftar Simpanan Pokok</span></a></li>
+     <li><a href="{{ route('anggota.ambil_simpanan') }}"><i class="icon-circle"></i> <span>Daftar Pengambilan Simpanan</span></a></li>
+     <li><a href="{{ route('anggota.peminjaman') }}"><i class="icon-circle"></i> <span>Daftar Peminjaman</span></a></li>
+     <li><a href="{{ route('anggota.angsuran') }}"><i class="icon-circle"></i> <span>Daftar Angsuran</span></a></li>
      @endrole
      
-       </ul>
-     </div>
-   </div>
+   </ul>
+ </div>
+</div>

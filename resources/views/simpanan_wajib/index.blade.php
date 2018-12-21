@@ -31,7 +31,7 @@
 						<td>{{ $wajib->anggota->user->nip }}</td>
 						<td>{{ $wajib->anggota->user->name }}</td>
 						<td>
-							<a href="{{ Storage::url($wajib->anggota->user->foto) ?? '' }}">
+							<a href="{{ Storage::url($wajib->anggota->user->foto) ?? '' }}" data-popup="lightbox">
 								<img src="{{ Storage::url($wajib->anggota->user->foto_small) ?? '' }}" alt="">
 								
 							</a>
