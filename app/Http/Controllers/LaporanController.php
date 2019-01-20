@@ -10,6 +10,7 @@ use App\SimpananWajib;
 use App\AmbilSimpanan;
 use App\Peminjaman;
 use App\Angsuran;
+use App\User;
 use Carbon\Carbon;
 use DB;
 class LaporanController extends Controller
@@ -29,7 +30,8 @@ class LaporanController extends Controller
         $tahun = $request->get('tahun');
         $input_date = Carbon::create($tahun, $bulan)->endOfMonth();
         $inputDate = $input_date->toDateString();
-        
+        $ketua = User::role('ketua')->first()->name;
+        $bendahara = 'Bendahara';
         switch ($jenis_laporan) {
             /**
              * Laporan simpanan pokok dan wajib
@@ -39,11 +41,13 @@ class LaporanController extends Controller
                 $i->where('bulan', '<=', $bulan);
                 $i->where('tahun', '<=', $tahun);
             }, 'simpanan_wajib'])
-            ->whereYear('tanggal_masuk', '<=', $tahun)
-            ->whereMonth('tanggal_masuk', '<=', $bulan)
+            // ->whereYear('tanggal_masuk', '<=', $tahun)
+            // ->whereMonth('tanggal_masuk', '<=', $bulan)
             ->get();
 
-            $pdf = PDF::setPaper('A4','landscape')->loadView('laporan.laporan_pokok_wajib', compact('anggotas', 'input_date', 'bulan', 'tahun'));
+            // return view('laporan.laporan_pokok_wajib', compact('anggotas', 'input_date', 'bulan', 'tahun'));
+
+            $pdf = PDF::setPaper('A4','landscape')->loadView('laporan.laporan_pokok_wajib', compact('anggotas', 'input_date', 'bulan', 'tahun', 'ketua', 'bendahara'));
             return $pdf->stream();
             break;
 
@@ -74,7 +78,7 @@ class LaporanController extends Controller
                 // echo '<br>';
 
             });
-            $pdf = PDF::setPaper('A4','landscape')->loadView('laporan.laporan_ambil_simpanan', compact('simpanans', 'input_date', 'bulan', 'tahun'));
+            $pdf = PDF::setPaper('A4','landscape')->loadView('laporan.laporan_ambil_simpanan', compact('simpanans', 'input_date', 'bulan', 'tahun', 'ketua', 'bendahara'));
             return $pdf->stream();
             break;
 
@@ -84,7 +88,7 @@ class LaporanController extends Controller
             ->whereYear('tanggal', '=', $input_date->year)
             ->latest()->get();
             // return view('laporan.laporan_peminjaman_angsuran', compact('angsurans', 'input_date', 'bulan', 'tahun'));
-            $pdf = PDF::setPaper('A4','landscape')->loadView('laporan.laporan_peminjaman_angsuran', compact('angsurans', 'input_date', 'bulan', 'tahun'));
+            $pdf = PDF::setPaper('A4','landscape')->loadView('laporan.laporan_peminjaman_angsuran', compact('angsurans', 'input_date', 'bulan', 'tahun','ketua', 'bendahara'));
             return $pdf->stream();
             break;
 

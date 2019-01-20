@@ -54,6 +54,8 @@
 </head>
 </head>
 <body>
+	@include('laporan.header')
+	
 	<p class="title">LAPORAN PEMINJAMAN DAN ANGSURAN <br>
 		BULAN {{ Config::get('enums.bulan')[$bulan] . " " . $tahun  }}
 	</p>
@@ -62,6 +64,8 @@
 		<thead>
 			<tr class="">
 				<th rowspan="2" width="1%" style="white-space: nowrap">No</th>
+				<th rowspan="2">Nama</th>
+				<th rowspan="2">NIP</th>
 				<th rowspan="2">Peminjaman</th>
 				<th rowspan="2">Angsuran</th>
 				<th rowspan="2">Bunga</th>
@@ -93,6 +97,8 @@
 			@endphp
 			<tr>
 				<td>{{ $no++ }}</td>
+				<td>{{ $angsuran->peminjaman->anggota->user->name }}</td>
+				<td>{{ $angsuran->peminjaman->anggota->user->nip }}</td>
 				<td>{{ rupiah($angsuran->peminjaman->jumlah) }}</td>
 				<td>{{ rupiah($angsuran->jumlah) }}</td>
 				<td>{{ rupiah($angsuran->bunga) }}</td>
@@ -123,9 +129,9 @@
 			<td></td>
 		</tr>
 		<tr>
-			<td>Syahrul</td>
+			<td>{{ $ketua }}</td>
 			<td></td>
-			<td>Epik</td>
+			<td>{{ $bendahara }}</td>
 		</tr>
 	</table>
 </body>

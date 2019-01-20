@@ -50,6 +50,8 @@
 </head>
 </head>
 <body>
+	@include('laporan.header')
+
 	<p class="title">LAPORAN PENGAMBILAN SIMPANAN POKOK <br>
 		BULAN {{ Config::get('enums.bulan')[$bulan] . " " . $tahun  }}
 	</p>
@@ -104,9 +106,9 @@
 			<td></td>
 		</tr>
 		<tr>
-			<td>Syahrul</td>
+			<td>{{ $ketua }}</td>
 			<td></td>
-			<td>Epik</td>
+			<td>{{ $bendahara }}</td>
 		</tr>
 	</table>
 </body>
